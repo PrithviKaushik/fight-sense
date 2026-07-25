@@ -105,7 +105,7 @@ def _(all_ages):
 
 @app.cell
 def _(all_ages, sns):
-    sns.displot(data = all_ages)
+    sns.histplot(data = all_ages)
     return
 
 
@@ -174,7 +174,7 @@ def _(all_height):
 
 @app.cell
 def _(all_height, sns):
-    sns.displot(all_height)
+    sns.histplot(all_height)
     return
 
 
@@ -213,8 +213,10 @@ def _(all_wins):
 
 
 @app.cell
-def _(all_wins, sns):
-    sns.displot(all_wins)
+def _(all_wins, plt, sns):
+    sns.histplot(all_wins)
+    plt.title('Distribution of Fighter Wins')
+    plt.xlabel('Number of Wins')
     return
 
 
@@ -223,6 +225,32 @@ def _(all_wins, plt):
     plt.boxplot(all_wins)
     plt.title("Distribution of Fighter wins")
     plt.ylabel("Number of Wins")
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    #### Losses
+    """)
+    return
+
+
+@app.cell
+def _(pd, ufc_data):
+    all_losses = pd.concat([ufc_data['R_losses'], ufc_data['B_losses']])
+    return (all_losses,)
+
+
+@app.cell
+def _(all_losses):
+    all_losses.describe()
+    return
+
+
+@app.cell
+def _(all_losses, sns):
+    sns.histplot(all_losses)
     return
 
 
@@ -276,9 +304,23 @@ def _(sns, ufc_data):
     return
 
 
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    #### b. Piechart
+    """)
+    return
+
+
 @app.cell
 def _(ufc_data):
     ufc_data['gender'].value_counts().plot(kind='pie', autopct = '%.2f%%')
+    return
+
+
+@app.cell
+def _(ufc_data):
+    ufc_data['title_bout'].value_counts().plot(kind='pie', autopct='%.2f%%')
     return
 
 
